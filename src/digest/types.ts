@@ -26,6 +26,7 @@ export type DigestRow = {
 export type Night = {
   night: string; // YYYY-MM-DD
   rows: DigestRow[]; // sorted by job, so the page and the JSON share one order
+  counts: { ok: number; retry: number; fail: number }; // parsed lines by status, bad lines excluded
   badLines: number; // lines that didn't parse: counted, never thrown
 };
 

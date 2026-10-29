@@ -20,6 +20,11 @@ describe('readNight', () => {
     expect(night?.badLines).toBe(1);
   });
 
+  it('counts lines by status, bad lines excluded', () => {
+    expect(night?.counts).toEqual({ ok: 10, retry: 4, fail: 1 });
+    expect(readNight('runs', '2026-10-27')?.counts).toEqual({ ok: 7, retry: 0, fail: 0 });
+  });
+
   it('counts retries and keeps the last status', () => {
     const row = night?.rows.find((r) => r.job === 'fixtures/refresh');
     expect(row).toMatchObject({
@@ -54,7 +59,7 @@ describe('readNight', () => {
 
     it('gives no rows and no bad lines', () => {
       writeFileSync(join(dir, '2026-01-01.jsonl'), '');
-      expect(readNight(dir, '2026-01-01')).toEqual({ night: '2026-01-01', rows: [], badLines: 0 });
+      expect(readNight(dir, '2026-01-01')).toEqual({ night: '2026-01-01', rows: [], counts: { ok: 0, retry: 0, fail: 0 }, badLines: 0 });
     });
   });
 });
